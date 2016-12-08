@@ -164,6 +164,7 @@ function(jucer_audio_plugin_settings)
     "BUILD_AUDIOUNIT"
     "BUILD_AUDIOUNIT_V3"
     "BUILD_RTAS"
+    "BUILD_AAX"
     "PLUGIN_NAME"
     "PLUGIN_DESCRIPTION"
     "PLUGIN_MANUFACTURER"
@@ -179,6 +180,8 @@ function(jucer_audio_plugin_settings)
     "PLUGIN_AU_MAIN_TYPE"
     "VST_CATEGORY"
     "PLUGIN_RTAS_CATEGORY"
+    "PLUGIN_AAX_CATEGORY"
+    "PLUGIN_AAX_IDENTIFIER"
   )
 
   foreach(element ${ARGN})
@@ -788,6 +791,9 @@ function(__generate_AppConfig_header project_id)
     __bool_to_int("${JUCER_BUILD_RTAS}" Build_RTAS_value)
     list(APPEND plugin_settings "Build_RTAS" "${Build_RTAS_value}")
 
+    __bool_to_int("${JUCER_BUILD_AAX}" Build_AAX_value)
+    list(APPEND plugin_settings "Build_AAX" "${Build_AAX_value}")
+
     __bool_to_int("${JUCER_BUILD_AUDIOUNIT_V3}" Build_STANDALONE_value)
     list(APPEND plugin_settings "Build_STANDALONE" "${Build_STANDALONE_value}")
 
@@ -881,6 +887,13 @@ function(__generate_AppConfig_header project_id)
     list(APPEND plugin_settings "RTASProductId" "JucePlugin_PluginCode")
     list(APPEND plugin_settings "RTASDisableBypass" "0")
     list(APPEND plugin_settings "RTASDisableMultiMono" "0")
+
+    list(APPEND plugin_settings "AAXIdentifier" "${JUCER_PLUGIN_AAX_IDENTIFIER}")
+    list(APPEND plugin_settings "AAXManufacturerCode" "JucePlugin_ManufacturerCode")
+    list(APPEND plugin_settings "AAXProductId" "JucePlugin_PluginCode")
+    list(APPEND plugin_settings "AAXCategory" "${JUCER_PLUGIN_AAX_CATEGORY}")
+    list(APPEND plugin_settings "AAXDisableBypass" "0")
+    list(APPEND plugin_settings "AAXDisableMultiMono" "0")
 
     string(LENGTH "${JUCER_PLUGIN_CHANNEL_CONFIGURATIONS}" plugin_channel_config_length)
     if(plugin_channel_config_length GREATER 0)
