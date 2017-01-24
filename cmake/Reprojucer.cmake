@@ -162,6 +162,7 @@ function(jucer_audio_plugin_settings)
     "BUILD_VST"
     "BUILD_VST3"
     "BUILD_AUDIOUNIT"
+    "BUILD_AUDIOUNIT_V3"
     "PLUGIN_NAME"
     "PLUGIN_DESCRIPTION"
     "PLUGIN_MANUFACTURER"
@@ -778,6 +779,12 @@ function(__generate_AppConfig_header project_id)
 
     __bool_to_int("${JUCER_BUILD_AUDIOUNIT}" Build_AU_value)
     list(APPEND plugin_settings "Build_AU" "${Build_AU_value}")
+
+    __bool_to_int("${JUCER_BUILD_AUDIOUNIT_V3}" Build_AUv3_value)
+    list(APPEND plugin_settings "Build_AUv3" "${Build_AUv3_value}")
+
+    __bool_to_int("${JUCER_BUILD_AUDIOUNIT_V3}" Build_STANDALONE_value)
+    list(APPEND plugin_settings "Build_STANDALONE" "${Build_STANDALONE_value}")
 
     list(APPEND plugin_settings "Name" "\"${JUCER_PLUGIN_NAME}\"")
     list(APPEND plugin_settings "Desc" "\"${JUCER_PLUGIN_DESCRIPTION}\"")
