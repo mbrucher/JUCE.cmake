@@ -163,6 +163,7 @@ function(jucer_audio_plugin_settings)
     "BUILD_VST3"
     "BUILD_AUDIOUNIT"
     "BUILD_AUDIOUNIT_V3"
+    "BUILD_RTAS"
     "PLUGIN_NAME"
     "PLUGIN_DESCRIPTION"
     "PLUGIN_MANUFACTURER"
@@ -177,6 +178,7 @@ function(jucer_audio_plugin_settings)
     "PLUGIN_AU_EXPORT_PREFIX"
     "PLUGIN_AU_MAIN_TYPE"
     "VST_CATEGORY"
+    "PLUGIN_RTAS_CATEGORY"
   )
 
   foreach(element ${ARGN})
@@ -783,6 +785,9 @@ function(__generate_AppConfig_header project_id)
     __bool_to_int("${JUCER_BUILD_AUDIOUNIT_V3}" Build_AUv3_value)
     list(APPEND plugin_settings "Build_AUv3" "${Build_AUv3_value}")
 
+    __bool_to_int("${JUCER_BUILD_RTAS}" Build_RTAS_value)
+    list(APPEND plugin_settings "Build_RTAS" "${Build_RTAS_value}")
+
     __bool_to_int("${JUCER_BUILD_AUDIOUNIT_V3}" Build_STANDALONE_value)
     list(APPEND plugin_settings "Build_STANDALONE" "${Build_STANDALONE_value}")
 
@@ -862,6 +867,20 @@ function(__generate_AppConfig_header project_id)
     list(APPEND plugin_settings "AUManufacturerCode" "JucePlugin_ManufacturerCode")
 
     list(APPEND plugin_settings "CFBundleIdentifier" "${JUCER_BUNDLE_IDENTIFIER}")
+
+    if(JUCER_PLUGIN_IS_A_SYNTH)
+      set(RTASCategory_value "ePlugInCategory_SWGenerators")
+    elseif(NOT DEFINED JUCER_PLUGIN_RTAS_CATEGORY)
+      set(RTASCategory_value "ePlugInCategory_None")
+    else()
+      set(RTASCategory_value "${JUCER_PLUGIN_RTAS_CATEGORY}")
+    endif()
+    list(APPEND plugin_settings "RTASCategory" "${RTASCategory_value}")
+
+    list(APPEND plugin_settings "RTASManufacturerCode" "JucePlugin_ManufacturerCode")
+    list(APPEND plugin_settings "RTASProductId" "JucePlugin_PluginCode")
+    list(APPEND plugin_settings "RTASDisableBypass" "0")
+    list(APPEND plugin_settings "RTASDisableMultiMono" "0")
 
     string(LENGTH "${JUCER_PLUGIN_CHANNEL_CONFIGURATIONS}" plugin_channel_config_length)
     if(plugin_channel_config_length GREATER 0)
