@@ -160,6 +160,7 @@ function(jucer_audio_plugin_settings)
 
   set(plugin_setting_tags
     "BUILD_VST"
+    "BUILD_VST3"
     "BUILD_AUDIOUNIT"
     "PLUGIN_NAME"
     "PLUGIN_DESCRIPTION"
@@ -629,6 +630,17 @@ function(jucer_project_end)
         __link_osx_frameworks(${target_name}_VST ${JUCER_PROJECT_OSX_FRAMEWORKS})
       endif()
 
+      if(JUCER_BUILD_VST3)
+        set(full_target_name ${target_name}_VST3)
+        add_library(${full_target_name} MODULE ${VST3_sources})
+        target_link_libraries(${full_target_name} ${target_name}_Shared_Code)
+        __create_plist_file(${full_target_name} "VST3" "BNDL" "????")
+        __set_bundle_properties(${full_target_name} "vst3")
+        __set_common_target_properties(${full_target_name})
+        __set_JucePlugin_Build_defines(${full_target_name} "VST3PlugIn")
+        __link_osx_frameworks(${target_name}_VST3)
+      endif()
+
       if(JUCER_BUILD_AUDIOUNIT)
         set(full_target_name ${target_name}_AU)
         add_library(${full_target_name} MODULE
@@ -760,6 +772,9 @@ function(__generate_AppConfig_header project_id)
 
     __bool_to_int("${JUCER_BUILD_VST}" Build_VST_value)
     list(APPEND plugin_settings "Build_VST" "${Build_VST_value}")
+
+    __bool_to_int("${JUCER_BUILD_VST3}" Build_VST3_value)
+    list(APPEND plugin_settings "Build_VST3" "${Build_VST3_value}")
 
     __bool_to_int("${JUCER_BUILD_AUDIOUNIT}" Build_AU_value)
     list(APPEND plugin_settings "Build_AU" "${Build_AU_value}")
