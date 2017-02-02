@@ -37,6 +37,23 @@ get_filename_component(JuceDemoPlugin_jucer_DIR "${JuceDemoPlugin_jucer_FILE}" D
 file(COPY "${JuceDemoPlugin_jucer_DIR}/Source" DESTINATION "${CMAKE_CURRENT_LIST_DIR}")
 
 
+if(APPLE)
+  set(VST_BINARY_LOCATION "$ENV{HOME}/Library/Audio/Plug-Ins/VST/")
+elseif(WIN32)
+  set(VST_BINARY_LOCATION "C:/Program Files/VstPlugins") # TODO: use registry and then fallback to hard coded path
+endif()
+set(VST_BINARY_LOCATION "${VST_BINARY_LOCATION}" CACHE PATH
+  "The folder in which the compiled VST binary should be placed."
+)
+
+if(APPLE)
+  set(AU_BINARY_LOCATION "$ENV{HOME}/Library/Audio/Plug-Ins/Components/")
+  set(AU_BINARY_LOCATION "${AU_BINARY_LOCATION}" CACHE PATH
+    "The folder in which the compiled AU binary should be placed."
+  )
+endif()
+
+
 jucer_project_begin(
   PROJECT_NAME "JuceDemoPlugin"
   PROJECT_VERSION "1.0.0"
