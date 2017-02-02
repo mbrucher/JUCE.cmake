@@ -335,6 +335,10 @@ function(jucer_project_end)
         __set_common_target_properties(${full_target_name})
         __set_JucePlugin_Build_defines(${full_target_name} "VSTPlugIn")
         __link_osx_frameworks(${target_name}_VST ${JUCER_PROJECT_OSX_FRAMEWORKS})
+        install(
+          TARGETS ${full_target_name}
+          DESTINATION "$ENV{HOME}/Library/Audio/Plug-Ins/VST/"
+        )
       endif()
 
       if(JUCER_BUILD_AUDIOUNIT)
@@ -386,6 +390,10 @@ function(jucer_project_end)
           ${JUCER_PROJECT_OSX_FRAMEWORKS} "AudioUnit" "CoreAudioKit"
         )
         __link_osx_frameworks(${target_name}_AU ${au_plugin_osx_frameworks})
+        install(
+          TARGETS ${full_target_name}
+          DESTINATION "$ENV{HOME}/Library/Audio/Plug-Ins/Components/"
+        )
       endif()
     else()
       add_library(${target_name} MODULE ${all_sources})
