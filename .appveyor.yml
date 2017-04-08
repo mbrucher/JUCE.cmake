@@ -14,6 +14,8 @@ install:
   - 7z x C:\SDKs\vstsdk3.zip -oC:\SDKs
 
 build_script:
+  - cmake -P cmake/test/run_all_tests.cmake
+
   - mkdir "examples\audio plugin host\build"
   - cd "examples\audio plugin host\build"
   - cmake ..
