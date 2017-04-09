@@ -54,6 +54,18 @@ endif()
 get_filename_component(jucer_file_name "${jucer_file}" NAME)
 string(REGEX REPLACE "[^A-Za-z0-9_]" "_" jucer_file_name_var "${jucer_file_name}")
 
+set(project_name "PROJECT_NAME \"HelloWorld\"")
+set(project_version "PROJECT_VERSION \"1.0.0\"")
+set(company_name "COMPANY_NAME \"ROLI Ltd.\"")
+set(company_website "# COMPANY_WEBSITE")
+set(company_email "# COMPANY_EMAIL")
+set(project_type "PROJECT_TYPE \"GUI Application\"")
+set(bundle_identifier "BUNDLE_IDENTIFIER \"com.roli.jucehelloworld\"")
+set(binarydatacpp_size_limit "BINARYDATACPP_SIZE_LIMIT \"Default\"")
+set(binarydata_namespace "# BINARYDATA_NAMESPACE")
+set(preprocessor_definitions "# PREPROCESSOR_DEFINITIONS")
+set(project_id "PROJECT_ID \"tTAKTK1s\"")
+
 configure_file(
   "${CMAKE_CURRENT_LIST_DIR}/cmake/templates/Jucer2CMake.CMakeLists.txt"
   "CMakeLists.txt"
