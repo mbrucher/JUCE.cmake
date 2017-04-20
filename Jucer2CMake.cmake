@@ -54,7 +54,25 @@ endif()
 get_filename_component(jucer_file_name "${jucer_file}" NAME)
 string(REGEX REPLACE "[^A-Za-z0-9_]" "_" jucer_file_name_var "${jucer_file_name}")
 
-set(project_name "PROJECT_NAME \"HelloWorld\"")
+function(get_substring big_string token_begin token_end output_variable)
+  string(FIND ${big_string} ${token_begin} get_substring_token_begin_pos)
+  string(SUBSTRING ${big_string} ${get_substring_token_begin_pos} -1 medium_string)
+  string(FIND ${medium_string} ${token_end} get_substring_token_end_pos)
+  string(SUBSTRING ${medium_string} 0 ${get_substring_token_end_pos} little_string)
+  string(LENGTH ${token_begin} token_begin_size)
+  string(SUBSTRING ${little_string} ${token_begin_size} -1 little_string_stripped)
+  set(${output_variable} "${little_string_stripped}" PARENT_SCOPE)
+endfunction(get_substring)
+
+
+
+
+
+get_substring(${jucer_file_content} "<JUCERPROJECT" ">" jucer_file_content_jucerProjectContent)
+  
+get_substring(${jucer_file_content_jucerProjectContent} "name=\"" "\" projectType" project_name_xml)
+
+set(project_name "PROJECT_NAME \"${project_name_xml}\"")
 set(project_version "PROJECT_VERSION \"1.0.0\"")
 set(company_name "COMPANY_NAME \"ROLI Ltd.\"")
 set(company_website "# COMPANY_WEBSITE")
