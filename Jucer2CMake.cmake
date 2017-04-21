@@ -74,10 +74,12 @@ get_substring(${jucer_file_content} "<JUCERPROJECT" ">" jucer_file_content_jucer
 #-------------- extract all content of 
 
 function(get_xml_attributes xml_node output_variable_prefix output_variable_list)
+  message("get_xml_attributes begin")
   # strip xml_node
-  string(STRIP ${xml_node} xml_node)
+  string(STRIP "${xml_node}" xml_node)
   # while xml_node not empty
-  while(NOT("${xml_node}" STREQUAL ""))
+  while(NOT xml_node STREQUAL "")
+    message ("xml_node=${xml_node}")
     # lookup first equal sign
     string(FIND ${xml_node} "=" equal_sign_pos)
     # extract from beginning to first equal sign pos
@@ -98,19 +100,21 @@ function(get_xml_attributes xml_node output_variable_prefix output_variable_list
     math (EXPR second_quote_pos "${second_quote_pos} + 1")
     string(SUBSTRING ${xml_node} ${second_quote_pos} -1 xml_node)
     # strip xml_node
-    string(STRIP ${xml_node} xml_node)
+    string(STRIP "${xml_node}" xml_node)
 
     # set variable
     set(full_xml_var_name ${output_variable_prefix}${xml_var_name})
-    set(${full_xml_var_name} ${xml_var_value})
+    set(${full_xml_var_name} ${xml_var_value} PARENT_SCOPE)
     # add variable to variable list
-    list(APPEND variable_list ${full_xml_var_name}
+    list(APPEND variable_list ${full_xml_var_name})
+    message("> ${full_xml_var_name}=${xml_var_value}")
 
   endwhile()
   set(${output_variable_list} "${variable_list}" PARENT_SCOPE)
+  message("get_xml_attributes end")
 endfunction(get_xml_attributes)
 
-get_xml_attributes(jucer_file_content_jucerProjectContent "xml_JUCERPROJECT_" jucer_file_content_jucerProjectContent_attributes)
+get_xml_attributes(${jucer_file_content_jucerProjectContent} "xml_JUCERPROJECT_" jucer_file_content_jucerProjectContent_attributes)
 
 message("Loop_var begin")
 foreach(loop_var ${jucer_file_content_jucerProjectContent_attributes})
