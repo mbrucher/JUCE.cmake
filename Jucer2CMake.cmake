@@ -80,7 +80,7 @@ get_substring_inclusive(${jucer_file_content} "<JUCERPROJECT" ">" jucer_file_con
 #-------------- extract all content of 
 
 function(get_xml_attributes xml_node output_variable_prefix output_variable_list)
-  #assuming this node has no attribute...
+  #assuming this node has no child...
 
   # strip first <
   string(FIND ${xml_node} "<" pos)
