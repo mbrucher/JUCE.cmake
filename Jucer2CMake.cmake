@@ -117,7 +117,7 @@ endfunction(get_xml_attributes)
 get_xml_attributes(${jucer_file_content_jucerProjectContent} "xml_JUCERPROJECT_" jucer_file_content_jucerProjectContent_attributes)
 
 message("Loop_var begin")
-foreach(loop_var ${jucer_file_content_jucerProjectContent_attributes})
+foreach(Loop_var ${jucer_file_content_jucerProjectContent_attributes})
   message("> ${Loop_var}=${${Loop_var}}")
 endforeach()
 message("Loop_var end")
