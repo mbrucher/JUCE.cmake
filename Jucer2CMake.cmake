@@ -129,6 +129,72 @@ if(xml_JUCERPROJECT_projectType STREQUAL "guiapp")
   set(xml_JUCERPROJECT_projectType "GUI Application")
 endif()
 
+
+# extract GROUP NODE
+string(FIND ${jucer_file_content} "<MAINGROUP" pos)
+string(SUBSTRING ${jucer_file_content} ${pos} -1 tempXml)
+string(FIND ${tempXml} ">" pos)
+math (EXPR pos "${pos} + 1")
+string(SUBSTRING ${tempXml} ${pos} -1 tempXml)
+string(FIND ${tempXml} "</MAINGROUP>" pos)
+string(SUBSTRING ${tempXml} 0 ${pos} tempXml)
+set(xml_group_node ${tempXml})
+message("XML xml_group_node = ${xml_group_node}")
+
+function(get_xml_children xml_node output_variable_prefix output_variable_list)
+  message("get_xml_children begin")
+  #delete this node information (top), <GROUP etc>
+  string(STRIP "${xml_node}" xml_node)
+  string(FIND ${xml_node} ">" pos)
+  math (EXPR pos "${pos} + 1")
+  string(SUBSTRING ${xml_node} ${pos} -1 xml_node)
+  #delete this node information bottom, </GROUP>
+  string(STRIP "${xml_node}" xml_node)
+  string(FIND ${xml_node} "<" pos REVERSE)
+  string(SUBSTRING ${xml_node} 0 ${pos} xml_node)
+  #while not empty
+  message("cleared xml_node=${xml_node}")
+  set(counter 0)
+  while(NOT xml_node STREQUAL "")
+    #lookup first <
+    string(FIND ${xml_node} "<" pos1)
+    #lookup first />
+    string(FIND ${xml_node} ">" pos2)
+    math(EXPR pos2 "${pos2} +1")
+    #extract substring
+    string(SUBSTRING ${xml_node} ${pos1} ${pos2} xml_child_node)
+    #set external variable
+    set(full_xml_var_name ${output_variable_prefix}${counter})
+    set(${full_xml_var_name} "${xml_child_node}" PARENT_SCOPE)
+    message("> ${full_xml_var_name}=${xml_child_node}")
+    # add variable to variable list
+    list(APPEND variable_list ${full_xml_var_name})
+    
+    #delete section
+    string(SUBSTRING ${xml_node} ${pos2} -1 xml_node)
+    string(STRIP "${xml_node}" xml_node)
+    #inc counter
+    math (EXPR counter "${counter} + 1")
+  endwhile()
+  set(${output_variable_list} "${variable_list}" PARENT_SCOPE)
+  message("get_xml_children end")
+endfunction(get_xml_children)
+
+
+
+get_xml_children(${xml_group_node} "xml_filenode_" xml_group_files_nodes)
+
+message("Loop_var begin -------- XML GROUP FILES NODES -----------------")
+foreach(Loop_var ${xml_group_files_nodes})
+  message("> ${Loop_var}=${${Loop_var}}")
+endforeach()
+message("Loop_var end")
+
+# for each FILE
+
+
+
+
 configure_file(
   "${CMAKE_CURRENT_LIST_DIR}/cmake/templates/Jucer2CMake.CMakeLists.txt"
   "CMakeLists.txt"
