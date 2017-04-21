@@ -69,7 +69,56 @@ endfunction(get_substring)
 
 
 get_substring(${jucer_file_content} "<JUCERPROJECT" ">" jucer_file_content_jucerProjectContent)
-  
+
+
+#-------------- extract all content of 
+
+function(get_xml_attributes xml_node output_variable_prefix output_variable_list)
+  # strip xml_node
+  string(STRIP ${xml_node} xml_node)
+  # while xml_node not empty
+  while(NOT("${xml_node}" STREQUAL ""))
+    # lookup first equal sign
+    string(FIND ${xml_node} "=" equal_sign_pos)
+    # extract from beginning to first equal sign pos
+    string(SUBSTRING ${xml_node} 0 ${equal_sign_pos} xml_var_name)
+    # remove used text in case the node name contains quotes
+    math (EXPR equal_sign_pos "${equal_sign_pos} + 1")
+    string(SUBSTRING ${xml_node} ${equal_sign_pos} -1 xml_node)
+    # lookup first quote
+    string(FIND ${xml_node} "\"" first_quote_pos)
+    # remove all text until the first quote so we can find the second quote
+    math (EXPR first_quote_pos "${first_quote_pos} + 1") 
+    string(SUBSTRING ${xml_node} ${first_quote_pos} -1 xml_node)
+    # lookup second quote
+    string(FIND ${xml_node} "\"" second_quote_pos)
+    # extract from first to second quote pos
+    string(SUBSTRING ${xml_node} 0 ${second_quote_pos} xml_var_value)
+    # remove all text until the second quote
+    math (EXPR second_quote_pos "${second_quote_pos} + 1")
+    string(SUBSTRING ${xml_node} ${second_quote_pos} -1 xml_node)
+    # strip xml_node
+    string(STRIP ${xml_node} xml_node)
+
+    # set variable
+    set(full_xml_var_name ${output_variable_prefix}${xml_var_name})
+    set(${full_xml_var_name} ${xml_var_value})
+    # add variable to variable list
+    list(APPEND variable_list ${full_xml_var_name}
+
+  endwhile()
+  set(${output_variable_list} "${variable_list}" PARENT_SCOPE)
+endfunction(get_xml_attributes)
+
+get_xml_attributes(jucer_file_content_jucerProjectContent "xml_JUCERPROJECT_" jucer_file_content_jucerProjectContent_attributes)
+
+message("Loop_var begin")
+foreach(loop_var ${jucer_file_content_jucerProjectContent_attributes})
+  message("> ${Loop_var}=${${Loop_var}}")
+endforeach()
+message("Loop_var end")
+
+
 get_substring(${jucer_file_content_jucerProjectContent} "name=\"" "\" projectType" project_name_xml)
 
 set(project_name "PROJECT_NAME \"${project_name_xml}\"")
