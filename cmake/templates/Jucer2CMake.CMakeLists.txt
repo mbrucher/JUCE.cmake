@@ -21,17 +21,17 @@ get_filename_component(@jucer_file_name_var@_DIR
 
 
 jucer_project_begin(
-  @project_name@
-  @project_version@
-  @company_name@
-  @company_website@
-  @company_email@
-  @project_type@
-  @bundle_identifier@
-  @binarydatacpp_size_limit@
-  @binarydata_namespace@
-  @preprocessor_definitions@
-  @project_id@
+  PROJECT_NAME "@xml_JUCERPROJECT_name@"
+  PROJECT_VERSION "@xml_JUCERPROJECT_version@"
+  COMPANY_NAME "@xml_JUCERPROJECT_companyName@"
+  # COMPANY_WEBSITE
+  # COMPANY_EMAIL
+  PROJECT_TYPE "@xml_JUCERPROJECT_projectType@"
+  BUNDLE_IDENTIFIER "@xml_JUCERPROJECT_bundleIdentifier@"
+  BINARYDATACPP_SIZE_LIMIT "Default"
+  # BINARYDATA_NAMESPACE
+  # PREPROCESSOR_DEFINITIONS
+  PROJECT_ID "@xml_JUCERPROJECT_id@"
 )
 
 jucer_project_files("HelloWorld/Source"

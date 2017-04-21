@@ -125,17 +125,9 @@ message("Loop_var end")
 
 get_substring(${jucer_file_content_jucerProjectContent} "name=\"" "\" projectType" project_name_xml)
 
-set(project_name "PROJECT_NAME \"${project_name_xml}\"")
-set(project_version "PROJECT_VERSION \"1.0.0\"")
-set(company_name "COMPANY_NAME \"ROLI Ltd.\"")
-set(company_website "# COMPANY_WEBSITE")
-set(company_email "# COMPANY_EMAIL")
-set(project_type "PROJECT_TYPE \"GUI Application\"")
-set(bundle_identifier "BUNDLE_IDENTIFIER \"com.roli.jucehelloworld\"")
-set(binarydatacpp_size_limit "BINARYDATACPP_SIZE_LIMIT \"Default\"")
-set(binarydata_namespace "# BINARYDATA_NAMESPACE")
-set(preprocessor_definitions "# PREPROCESSOR_DEFINITIONS")
-set(project_id "PROJECT_ID \"tTAKTK1s\"")
+if(xml_JUCERPROJECT_projectType STREQUAL "guiapp")
+  set(xml_JUCERPROJECT_projectType "GUI Application")
+endif()
 
 configure_file(
   "${CMAKE_CURRENT_LIST_DIR}/cmake/templates/Jucer2CMake.CMakeLists.txt"
