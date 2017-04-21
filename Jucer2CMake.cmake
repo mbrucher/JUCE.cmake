@@ -80,6 +80,22 @@ get_substring_inclusive(${jucer_file_content} "<JUCERPROJECT" ">" jucer_file_con
 #-------------- extract all content of 
 
 function(get_xml_attributes xml_node output_variable_prefix output_variable_list)
+  #assuming this node has no attribute...
+
+  # strip first <
+  string(FIND ${xml_node} "<" pos)
+  math (EXPR pos "${pos} + 1")
+  string(SUBSTRING ${xml_node} ${pos} -1 xml_node)
+  string(STRIP "${xml_node}" xml_node)
+  # strip node tag name
+  # from https://www.w3schools.com/xml/xml_elements.asp , Element names cannot contain spaces
+  string(FIND ${xml_node} " " pos)
+  string(SUBSTRING ${xml_node} ${pos} -1 xml_node)
+  # strip last >
+  string(FIND ${xml_node} ">" pos REVERSE)
+  string(SUBSTRING ${xml_node} 0 ${pos} xml_node)
+
+  #-------------------------------------------
   message("get_xml_attributes begin")
   # strip xml_node
   string(STRIP "${xml_node}" xml_node)
@@ -127,7 +143,6 @@ foreach(Loop_var ${jucer_file_content_jucerProjectContent_attributes})
   message("> ${Loop_var}=${${Loop_var}}")
 endforeach()
 message("Loop_var end")
-
 
 get_substring(${jucer_file_content_jucerProjectContent} "name=\"" "\" projectType" project_name_xml)
 
