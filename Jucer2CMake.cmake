@@ -80,8 +80,6 @@ get_substring_inclusive(${jucer_file_content} "<JUCERPROJECT" ">" jucer_file_con
 #-------------- extract all content of 
 
 function(get_xml_attributes xml_node output_variable_prefix output_variable_list)
-  #assuming this node has no child...
-
   # strip first <
   string(FIND ${xml_node} "<" pos)
   math (EXPR pos "${pos} + 1")
@@ -91,12 +89,17 @@ function(get_xml_attributes xml_node output_variable_prefix output_variable_list
   # from https://www.w3schools.com/xml/xml_elements.asp , Element names cannot contain spaces
   string(FIND ${xml_node} " " pos)
   string(SUBSTRING ${xml_node} ${pos} -1 xml_node)
-  # strip last >
-  string(FIND ${xml_node} ">" pos REVERSE)
+
+  # if node is self closed, we strip last />, else we strip last > 
+  string(FIND ${xml_node} "/>" pos REVERSE)
+  if(${pos} EQUAL -1)
+    string(FIND ${xml_node} ">" pos REVERSE)
+  endif()
   string(SUBSTRING ${xml_node} 0 ${pos} xml_node)
 
   #-------------------------------------------
-  message("get_xml_attributes begin")
+  message("get_xml_attributes begin with xml_node = ${xml_node}")
+  message("")
   # strip xml_node
   string(STRIP "${xml_node}" xml_node)
   # while xml_node not empty
@@ -206,8 +209,14 @@ endfunction(get_xml_children)
 get_xml_children(${xml_group_node} "xml_filenode_" xml_group_files_nodes)
 
 message("Loop_var begin -------- XML GROUP FILES NODES -----------------")
+
 foreach(Loop_var ${xml_group_files_nodes})
-  message("> ${Loop_var}=${${Loop_var}}")
+  # dereference double pointer to get n
+  set(xml_file_node ${${Loop_var}})
+  message("> ${xml_file_node}")
+  get_xml_attributes(${xml_file_node} "xml_file_node_" xml_file_node_attributes)
+  message("> file path=${xml_file_node_file}")
+  message(FATAL_ERROR "breakpoint: TODO from here, we should be able to create the jucer_project_files section")
 endforeach()
 message("Loop_var end")
 
