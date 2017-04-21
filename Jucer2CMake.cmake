@@ -64,12 +64,18 @@ function(get_substring big_string token_begin token_end output_variable)
   set(${output_variable} "${little_string_stripped}" PARENT_SCOPE)
 endfunction(get_substring)
 
+function(get_substring_inclusive big_string token_begin token_end output_variable)
+  string(FIND ${big_string} ${token_begin} pos)
+  string(SUBSTRING ${big_string} ${pos} -1 big_string)
+  string(FIND ${big_string} ${token_end} pos)
+  string(LENGTH ${token_end} token_end_size)
+  message(${token_end_size})
+  math(EXPR pos "${pos} + ${token_end_size}")
+  string(SUBSTRING ${big_string} 0 ${pos} substring)
+  set(${output_variable} "${substring}" PARENT_SCOPE)
+endfunction(get_substring_inclusive)
 
-
-
-
-get_substring(${jucer_file_content} "<JUCERPROJECT" ">" jucer_file_content_jucerProjectContent)
-
+get_substring_inclusive(${jucer_file_content} "<JUCERPROJECT" ">" jucer_file_content_jucerProjectContent)
 
 #-------------- extract all content of 
 
