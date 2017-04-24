@@ -1,0 +1,3 @@
+The xmlstarlet elements has been created by this command
+
+xmlstarlet elements -v ../../../JUCE/examples/HelloWorld/HelloWorld.jucer

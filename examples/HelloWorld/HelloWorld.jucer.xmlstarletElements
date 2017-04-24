@@ -1,0 +1,70 @@
+JUCERPROJECT[@id='tTAKTK1s' and @name='HelloWorld' and @projectType='guiapp' and @juceFolder='../../../juce' and @jucerVersion='4.3.1' and @version='1.0.0' and @bundleIdentifier='com.roli.jucehelloworld' and @companyName='ROLI Ltd.' and @includeBinaryInAppConfig='1']
+JUCERPROJECT/EXPORTFORMATS
+JUCERPROJECT/EXPORTFORMATS/XCODE_MAC[@targetFolder='Builds/MacOSX' and @vstFolder='~/SDKs/vstsdk2.4' and @rtasFolder='~/SDKs/PT_80_SDK' and @objCExtraSuffix='JtTAKTK1s']
+JUCERPROJECT/EXPORTFORMATS/XCODE_MAC/CONFIGURATIONS
+JUCERPROJECT/EXPORTFORMATS/XCODE_MAC/CONFIGURATIONS/CONFIGURATION[@name='Debug' and @isDebug='1' and @optimisation='1' and @targetName='HelloWorld' and @osxSDK='1' and @osxCompatibility='1' and @osxArchitecture='default']
+JUCERPROJECT/EXPORTFORMATS/XCODE_MAC/CONFIGURATIONS/CONFIGURATION[@name='Release' and @isDebug='0' and @optimisation='2' and @targetName='HelloWorld' and @osxSDK='1' and @osxCompatibility='1' and @osxArchitecture='default']
+JUCERPROJECT/EXPORTFORMATS/XCODE_MAC/MODULEPATHS
+JUCERPROJECT/EXPORTFORMATS/XCODE_MAC/MODULEPATHS/MODULEPATH[@id='juce_gui_extra' and @path='../../modules']
+JUCERPROJECT/EXPORTFORMATS/XCODE_MAC/MODULEPATHS/MODULEPATH[@id='juce_gui_basics' and @path='../../modules']
+JUCERPROJECT/EXPORTFORMATS/XCODE_MAC/MODULEPATHS/MODULEPATH[@id='juce_graphics' and @path='../../modules']
+JUCERPROJECT/EXPORTFORMATS/XCODE_MAC/MODULEPATHS/MODULEPATH[@id='juce_events' and @path='../../modules']
+JUCERPROJECT/EXPORTFORMATS/XCODE_MAC/MODULEPATHS/MODULEPATH[@id='juce_data_structures' and @path='../../modules']
+JUCERPROJECT/EXPORTFORMATS/XCODE_MAC/MODULEPATHS/MODULEPATH[@id='juce_core' and @path='../../modules']
+JUCERPROJECT/EXPORTFORMATS/XCODE_IPHONE[@targetFolder='Builds/iOS' and @vstFolder='~/SDKs/vstsdk2.4' and @rtasFolder='~/SDKs/PT_80_SDK' and @objCExtraSuffix='JtTAKTK1s' and @iosScreenOrientation='portraitlandscape']
+JUCERPROJECT/EXPORTFORMATS/XCODE_IPHONE/CONFIGURATIONS
+JUCERPROJECT/EXPORTFORMATS/XCODE_IPHONE/CONFIGURATIONS/CONFIGURATION[@name='Debug' and @isDebug='1' and @optimisation='1' and @targetName='HelloWorld' and @osxSDK='1' and @osxCompatibility='1' and @osxArchitecture='default' and @iosCompatibility='default']
+JUCERPROJECT/EXPORTFORMATS/XCODE_IPHONE/CONFIGURATIONS/CONFIGURATION[@name='Release' and @isDebug='0' and @optimisation='2' and @targetName='HelloWorld' and @osxSDK='1' and @osxCompatibility='1' and @osxArchitecture='default' and @iosCompatibility='default']
+JUCERPROJECT/EXPORTFORMATS/XCODE_IPHONE/MODULEPATHS
+JUCERPROJECT/EXPORTFORMATS/XCODE_IPHONE/MODULEPATHS/MODULEPATH[@id='juce_gui_extra' and @path='../../modules']
+JUCERPROJECT/EXPORTFORMATS/XCODE_IPHONE/MODULEPATHS/MODULEPATH[@id='juce_gui_basics' and @path='../../modules']
+JUCERPROJECT/EXPORTFORMATS/XCODE_IPHONE/MODULEPATHS/MODULEPATH[@id='juce_graphics' and @path='../../modules']
+JUCERPROJECT/EXPORTFORMATS/XCODE_IPHONE/MODULEPATHS/MODULEPATH[@id='juce_events' and @path='../../modules']
+JUCERPROJECT/EXPORTFORMATS/XCODE_IPHONE/MODULEPATHS/MODULEPATH[@id='juce_data_structures' and @path='../../modules']
+JUCERPROJECT/EXPORTFORMATS/XCODE_IPHONE/MODULEPATHS/MODULEPATH[@id='juce_core' and @path='../../modules']
+JUCERPROJECT/EXPORTFORMATS/VS2010[@targetFolder='Builds/VisualStudio2010']
+JUCERPROJECT/EXPORTFORMATS/VS2010/CONFIGURATIONS
+JUCERPROJECT/EXPORTFORMATS/VS2010/CONFIGURATIONS/CONFIGURATION[@name='Debug' and @winWarningLevel='4' and @generateManifest='1' and @winArchitecture='32-bit' and @isDebug='1' and @optimisation='1' and @targetName='HelloWorld']
+JUCERPROJECT/EXPORTFORMATS/VS2010/CONFIGURATIONS/CONFIGURATION[@name='Release' and @winWarningLevel='4' and @generateManifest='1' and @winArchitecture='32-bit' and @isDebug='0' and @optimisation='3' and @targetName='HelloWorld']
+JUCERPROJECT/EXPORTFORMATS/VS2010/MODULEPATHS
+JUCERPROJECT/EXPORTFORMATS/VS2010/MODULEPATHS/MODULEPATH[@id='juce_gui_extra' and @path='../../modules']
+JUCERPROJECT/EXPORTFORMATS/VS2010/MODULEPATHS/MODULEPATH[@id='juce_gui_basics' and @path='../../modules']
+JUCERPROJECT/EXPORTFORMATS/VS2010/MODULEPATHS/MODULEPATH[@id='juce_graphics' and @path='../../modules']
+JUCERPROJECT/EXPORTFORMATS/VS2010/MODULEPATHS/MODULEPATH[@id='juce_events' and @path='../../modules']
+JUCERPROJECT/EXPORTFORMATS/VS2010/MODULEPATHS/MODULEPATH[@id='juce_data_structures' and @path='../../modules']
+JUCERPROJECT/EXPORTFORMATS/VS2010/MODULEPATHS/MODULEPATH[@id='juce_core' and @path='../../modules']
+JUCERPROJECT/EXPORTFORMATS/VS2015[@targetFolder='Builds/VisualStudio2015']
+JUCERPROJECT/EXPORTFORMATS/VS2015/CONFIGURATIONS
+JUCERPROJECT/EXPORTFORMATS/VS2015/CONFIGURATIONS/CONFIGURATION[@name='Debug' and @winWarningLevel='4' and @generateManifest='1' and @winArchitecture='32-bit' and @isDebug='1' and @optimisation='1' and @targetName='HelloWorld']
+JUCERPROJECT/EXPORTFORMATS/VS2015/CONFIGURATIONS/CONFIGURATION[@name='Release' and @winWarningLevel='4' and @generateManifest='1' and @winArchitecture='32-bit' and @isDebug='0' and @optimisation='3' and @targetName='HelloWorld']
+JUCERPROJECT/EXPORTFORMATS/VS2015/MODULEPATHS
+JUCERPROJECT/EXPORTFORMATS/VS2015/MODULEPATHS/MODULEPATH[@id='juce_gui_extra' and @path='../../modules']
+JUCERPROJECT/EXPORTFORMATS/VS2015/MODULEPATHS/MODULEPATH[@id='juce_gui_basics' and @path='../../modules']
+JUCERPROJECT/EXPORTFORMATS/VS2015/MODULEPATHS/MODULEPATH[@id='juce_graphics' and @path='../../modules']
+JUCERPROJECT/EXPORTFORMATS/VS2015/MODULEPATHS/MODULEPATH[@id='juce_events' and @path='../../modules']
+JUCERPROJECT/EXPORTFORMATS/VS2015/MODULEPATHS/MODULEPATH[@id='juce_data_structures' and @path='../../modules']
+JUCERPROJECT/EXPORTFORMATS/VS2015/MODULEPATHS/MODULEPATH[@id='juce_core' and @path='../../modules']
+JUCERPROJECT/EXPORTFORMATS/LINUX_MAKE[@targetFolder='Builds/Linux' and @vstFolder='~/SDKs/vstsdk2.4']
+JUCERPROJECT/EXPORTFORMATS/LINUX_MAKE/CONFIGURATIONS
+JUCERPROJECT/EXPORTFORMATS/LINUX_MAKE/CONFIGURATIONS/CONFIGURATION[@name='Debug' and @isDebug='1' and @optimisation='1' and @targetName='HelloWorld' and @libraryPath='/usr/X11R6/lib/']
+JUCERPROJECT/EXPORTFORMATS/LINUX_MAKE/CONFIGURATIONS/CONFIGURATION[@name='Release' and @isDebug='0' and @optimisation='2' and @targetName='HelloWorld' and @libraryPath='/usr/X11R6/lib/']
+JUCERPROJECT/EXPORTFORMATS/LINUX_MAKE/MODULEPATHS
+JUCERPROJECT/EXPORTFORMATS/LINUX_MAKE/MODULEPATHS/MODULEPATH[@id='juce_gui_extra' and @path='../../modules']
+JUCERPROJECT/EXPORTFORMATS/LINUX_MAKE/MODULEPATHS/MODULEPATH[@id='juce_gui_basics' and @path='../../modules']
+JUCERPROJECT/EXPORTFORMATS/LINUX_MAKE/MODULEPATHS/MODULEPATH[@id='juce_graphics' and @path='../../modules']
+JUCERPROJECT/EXPORTFORMATS/LINUX_MAKE/MODULEPATHS/MODULEPATH[@id='juce_events' and @path='../../modules']
+JUCERPROJECT/EXPORTFORMATS/LINUX_MAKE/MODULEPATHS/MODULEPATH[@id='juce_data_structures' and @path='../../modules']
+JUCERPROJECT/EXPORTFORMATS/LINUX_MAKE/MODULEPATHS/MODULEPATH[@id='juce_core' and @path='../../modules']
+JUCERPROJECT/MAINGROUP[@id='a0m6ZvX1F' and @name='HelloWorld']
+JUCERPROJECT/MAINGROUP/GROUP[@id='GVpTv8yA5' and @name='Source']
+JUCERPROJECT/MAINGROUP/GROUP/FILE[@id='wm1yCLKYK' and @name='Main.cpp' and @compile='1' and @resource='0' and @file='Source/Main.cpp']
+JUCERPROJECT/MAINGROUP/GROUP/FILE[@id='Ir0rGDFpT' and @name='MainComponent.cpp' and @compile='1' and @resource='0' and @file='Source/MainComponent.cpp']
+JUCERPROJECT/MAINGROUP/GROUP/FILE[@id='Plz1QicEA' and @name='MainComponent.h' and @compile='0' and @resource='0' and @file='Source/MainComponent.h']
+JUCERPROJECT/JUCEOPTIONS
+JUCERPROJECT/MODULES
+JUCERPROJECT/MODULES/MODULE[@id='juce_core' and @showAllCode='1']
+JUCERPROJECT/MODULES/MODULE[@id='juce_data_structures' and @showAllCode='1']
+JUCERPROJECT/MODULES/MODULE[@id='juce_events' and @showAllCode='1']
+JUCERPROJECT/MODULES/MODULE[@id='juce_graphics' and @showAllCode='1']
+JUCERPROJECT/MODULES/MODULE[@id='juce_gui_basics' and @showAllCode='1']
+JUCERPROJECT/MODULES/MODULE[@id='juce_gui_extra' and @showAllCode='1']
