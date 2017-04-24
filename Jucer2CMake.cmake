@@ -199,19 +199,21 @@ get_xml_children(${xml_group_node} "xml_filenode_" xml_group_files_nodes)
 
 message("Loop_var begin -------- XML GROUP FILES NODES -----------------")
 
+
+string(CONCAT jucer_project_files_var ${jucer_project_files_var} "jucer_project_files(\"HelloWorld/Source\"\n")
+message(FATAL_ERROR "breakpoint: TODO from here, generates HelloWorld/Source dynamicaly")
+
 foreach(Loop_var ${xml_group_files_nodes})
   # dereference double pointer to get n
   set(xml_file_node ${${Loop_var}})
-  message("> ${xml_file_node}")
+  #message("> ${xml_file_node}")
   get_xml_attributes(${xml_file_node} "xml_file_node_" xml_file_node_attributes)
   message("> file path=${xml_file_node_file}")
-  message(FATAL_ERROR "breakpoint: TODO from here, we should be able to create the jucer_project_files section")
+  string(CONCAT jucer_project_files_var ${jucer_project_files_var} "  \"\${${jucer_file_name_var}_DIR}/${xml_file_node_file}\"\n")
 endforeach()
 message("Loop_var end")
 
-# for each FILE
-
-
+string(CONCAT jucer_project_files_var ${jucer_project_files_var} ")\n")
 
 
 configure_file(

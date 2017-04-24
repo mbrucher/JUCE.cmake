@@ -34,11 +34,13 @@ jucer_project_begin(
   PROJECT_ID "@xml_JUCERPROJECT_id@"
 )
 
-jucer_project_files("HelloWorld/Source"
-  "${@jucer_file_name_var@_DIR}/Source/Main.cpp"
-  "${@jucer_file_name_var@_DIR}/Source/MainComponent.cpp"
-  "${@jucer_file_name_var@_DIR}/Source/MainComponent.h"
-)
+@jucer_project_files_var@
+
+#jucer_project_files("HelloWorld/Source"
+#  "${@jucer_file_name_var@_DIR}/Source/Main.cpp"
+#  "${@jucer_file_name_var@_DIR}/Source/MainComponent.cpp"
+#  "${@jucer_file_name_var@_DIR}/Source/MainComponent.h"
+#)
 
 jucer_project_module(
   juce_core
