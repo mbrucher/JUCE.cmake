@@ -69,7 +69,6 @@ function(get_substring_inclusive big_string token_begin token_end output_variabl
   string(SUBSTRING ${big_string} ${pos} -1 big_string)
   string(FIND ${big_string} ${token_end} pos)
   string(LENGTH ${token_end} token_end_size)
-  message(${token_end_size})
   math(EXPR pos "${pos} + ${token_end_size}")
   string(SUBSTRING ${big_string} 0 ${pos} substring)
   set(${output_variable} "${substring}" PARENT_SCOPE)
@@ -98,13 +97,10 @@ function(get_xml_attributes xml_node output_variable_prefix output_variable_list
   string(SUBSTRING ${xml_node} 0 ${pos} xml_node)
 
   #-------------------------------------------
-  message("get_xml_attributes begin with xml_node = ${xml_node}")
-  message("")
   # strip xml_node
   string(STRIP "${xml_node}" xml_node)
   # while xml_node not empty
   while(NOT xml_node STREQUAL "")
-    message ("xml_node=${xml_node}")
     # lookup first equal sign
     string(FIND ${xml_node} "=" equal_sign_pos)
     # extract from beginning to first equal sign pos
@@ -132,11 +128,9 @@ function(get_xml_attributes xml_node output_variable_prefix output_variable_list
     set(${full_xml_var_name} ${xml_var_value} PARENT_SCOPE)
     # add variable to variable list
     list(APPEND variable_list ${full_xml_var_name})
-    message("> ${full_xml_var_name}=${xml_var_value}")
 
   endwhile()
   set(${output_variable_list} "${variable_list}" PARENT_SCOPE)
-  message("get_xml_attributes end")
 endfunction(get_xml_attributes)
 
 get_xml_attributes(${jucer_file_content_jucerProjectContent} "xml_JUCERPROJECT_" jucer_file_content_jucerProjectContent_attributes)
@@ -163,10 +157,8 @@ string(SUBSTRING ${tempXml} ${pos} -1 tempXml)
 string(FIND ${tempXml} "</MAINGROUP>" pos)
 string(SUBSTRING ${tempXml} 0 ${pos} tempXml)
 set(xml_group_node ${tempXml})
-message("XML xml_group_node = ${xml_group_node}")
 
 function(get_xml_children xml_node output_variable_prefix output_variable_list)
-  message("get_xml_children begin")
   #delete this node information (top), <GROUP etc>
   string(STRIP "${xml_node}" xml_node)
   string(FIND ${xml_node} ">" pos)
@@ -177,7 +169,6 @@ function(get_xml_children xml_node output_variable_prefix output_variable_list)
   string(FIND ${xml_node} "<" pos REVERSE)
   string(SUBSTRING ${xml_node} 0 ${pos} xml_node)
   #while not empty
-  message("cleared xml_node=${xml_node}")
   set(counter 0)
   while(NOT xml_node STREQUAL "")
     #lookup first <
@@ -190,7 +181,6 @@ function(get_xml_children xml_node output_variable_prefix output_variable_list)
     #set external variable
     set(full_xml_var_name ${output_variable_prefix}${counter})
     set(${full_xml_var_name} "${xml_child_node}" PARENT_SCOPE)
-    message("> ${full_xml_var_name}=${xml_child_node}")
     # add variable to variable list
     list(APPEND variable_list ${full_xml_var_name})
     
@@ -201,7 +191,6 @@ function(get_xml_children xml_node output_variable_prefix output_variable_list)
     math (EXPR counter "${counter} + 1")
   endwhile()
   set(${output_variable_list} "${variable_list}" PARENT_SCOPE)
-  message("get_xml_children end")
 endfunction(get_xml_children)
 
 
