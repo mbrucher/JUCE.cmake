@@ -128,6 +128,7 @@ function(read_next_element in_xml out_xml out_elm_type out_elm_name out_elm_attr
       endif()
 
       # TODO: deal with attributes
+      set(elm_attrs "TODO")
       string(FIND "${in_xml}" "/>" close_empty_pos)
       string(FIND "${in_xml}" ">" close_pos)
       if(close_empty_pos LESS close_pos)
@@ -167,7 +168,7 @@ function(main)
       math(EXPR depth "${depth} + 1")
 
       if(NOT elm_attrs STREQUAL "")
-        set(attrs "[]")
+        set(attrs "[${elm_attrs}]")
       endif()
 
       message(STATUS "${xpath}${attrs}")
