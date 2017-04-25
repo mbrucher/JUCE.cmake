@@ -159,15 +159,116 @@ foreach(Loop_var ${jucer_file_content_jucerProjectContent_attributes})
 endforeach()
 message("Loop_var end")
 
-message(FATAL_ERROR "breakpoint get_xml_attributes REPAIRED ! :D")
 
-get_substring(${jucer_file_content_jucerProjectContent} "name=\"" "\" projectType" project_name_xml)
+set(project_name_xml ${xml_JUCERPROJECT_name})
 
 if(xml_JUCERPROJECT_projectType STREQUAL "guiapp")
   set(xml_JUCERPROJECT_projectType "GUI Application")
 endif()
 
 
+function(is_descendant xml_node_line_parent xml_node_line_descendant output_variable_bool)
+  message(FATAL_ERROR "\n unimplemented is_descendant")
+endfunction(is_descendant)
+
+function(get_xpath_tag_name xml_xpath output_tag_name)
+  message(FATAL_ERROR "\n unimplemented get_xpath_tag_name")
+endfunction(get_xpath_tag_name)
+
+function(get_xpath_depth xml_xpath output_depth)
+  message(FATAL_ERROR "\n unimplemented get_xpath_depth")
+endfunction(get_xpath_depth)
+
+function(split_xml_line xml_line output_xpath output_attributes_string)
+  message(FATAL_ERROR "\n unimplemented split_xml_line")
+  
+  # strip potential attributes
+  string(SUBSTRING "${xml_node}" 0 ${pos} xml_node_line)
+  string(FIND "${xml_node_line}" "[@" pos)
+  if(NOT pos EQUAL -1)
+    # has attribute for this node
+    return()
+  endif()
+
+endfunction(split_xml_line)
+
+function(split_next_line big_string output_head_line output_tail)
+  if(big_string STREQUAL "")
+    return()
+  endif()
+  string(FIND "${big_string}" "\n" pos)
+  string(SUBSTRING ${big_string} 0 ${pos} output_head_line)
+  if(pos EQUAL -1)
+    return()
+  endif()
+  math (EXPR pos "${pos} + 1")
+  string(SUBSTRING ${big_string} ${pos} output_tail)
+endfunction(split_next_line)
+
+function(get_xml_children xml_node node_tag_regex output_variable_prefix output_variable_list)
+  split_next_line(xml_node xml_node_line xml_node)
+  if(xml_node STREQUAL "")
+    # no child for this node
+    return()
+  endif()
+
+  # save the current depth
+  split_xml_line(xml_node_line xpath attributes)
+  get_xpath_depth(${xpath} xml_node_depth)
+  set(original_xml_node_depth ${xml_node_depth})
+  math (EXPR xml_new_child_node_depth "${xml_node_depth} + 1")
+
+  set(counter 0)
+  # while xml node not empty
+  while(NOT xml_node STREQUAL "")
+    # extract next line
+    split_next_line(xml_node xml_node_line xml_node)
+    split_xml_line(xml_node_line xpath attributes)
+    get_xpath_depth(${xpath} xml_node_depth)
+    
+    if(xml_node_depth LESS original_xml_node_depth)
+      message(AUTHOR_WARNING "get_xml_children: passed xml_node may be misformed because xml_node depth is not the lowest possible")
+      break()
+    endif()
+
+    if(xml_node_depth EQUAL original_xml_node_depth)
+      message(AUTHOR_WARNING "get_xml_children: passed xml_node may be misformed because it has siblings (same depth nodes)")
+      break()
+    endif()
+
+    if(xml_node_depth EQUAL xml_new_child_node_depth)
+      if(NOT counter EQUAL 0)
+        # save the current child
+        # set variable
+        set(full_xml_var_name ${output_variable_prefix}${counter})
+        set(${full_xml_var_name} ${xml_current_child_value} PARENT_SCOPE)
+        # add variable to variable list
+        list(APPEND variable_list ${full_xml_var_name})
+        # reset current child
+        set(${xml_current_child_value} "")
+      endif()
+      math (EXPR counter "${counter} + 1")
+    endif()
+
+    string(CONCAT xml_current_child_value ${xml_current_child_value} xml_node_line "\n")
+  endwhile()
+
+  # set global variable
+  set(${output_variable_list} "${variable_list}" PARENT_SCOPE)
+  return()
+endfunction(get_xml_children)
+
+get_xml_children(${jucer_file_content} "" "jucer_xml_lvl1_" jucer_xml_lvl0_children)
+
+message("Loop_var begin ---------------------------------")
+foreach(Loop_var ${jucer_xml_lvl0_children})
+  message("> ${Loop_var}=${${Loop_var}}")
+endforeach()
+message("Loop_var end")
+
+
+
+message(FATAL_ERROR "\nbreakpoint get_xml_children ????")
 # extract GROUP NODE
 string(FIND ${jucer_file_content} "<MAINGROUP" pos)
 string(SUBSTRING ${jucer_file_content} ${pos} -1 tempXml)
