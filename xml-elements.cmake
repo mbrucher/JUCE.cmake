@@ -8,15 +8,21 @@ endfunction()
 
 function(skip_white_spaces in_xml out_xml)
 
+  set(pos 0)
   string(LENGTH "${in_xml}" in_length)
 
-  set(pos 0)
-  set(char " ")
-  while(pos LESS in_length AND char MATCHES "[ \n\t]")
-    string(SUBSTRING "${in_xml}" ${pos} 1 char)
-    math(EXPR pos "${pos} + 1")
+  while(1)
+    if(pos LESS in_length)
+      string(SUBSTRING "${in_xml}" ${pos} 1 char)
+      if(char MATCHES "[ \n\t]")
+        math(EXPR pos "${pos} + 1")
+      else()
+        break()
+      endif()
+    else()
+      break()
+    endif()
   endwhile()
-  math(EXPR pos "${pos} - 1")
 
   pop_front("${in_xml}" ${pos} in_xml)
 
@@ -46,18 +52,27 @@ endfunction()
 
 function(read_identifier in_xml out_xml out_identifier)
 
-  set(pos 0)
-  string(SUBSTRING "${in_xml}" ${pos} 1 char)
+  string(SUBSTRING "${in_xml}" 0 1 first_char)
 
-  if(NOT char MATCHES "[-_:.A-Za-z0-9]")
-    message(FATAL_ERROR "Expected identifier token, got '${char}'")
+  if(NOT first_char MATCHES "[A-Za-z]")
+    message(FATAL_ERROR "Expected identifier token, got '${first_char}'")
   endif()
 
-  while(char MATCHES "[-_:.A-Za-z0-9]")
-    string(SUBSTRING "${in_xml}" ${pos} 1 char)
-    math(EXPR pos "${pos} + 1")
+  set(pos 1)
+  string(LENGTH "${in_xml}" in_length)
+
+  while(1)
+    if(pos LESS in_length)
+      string(SUBSTRING "${in_xml}" ${pos} 1 char)
+      if(char MATCHES "[-_:.A-Za-z0-9]")
+        math(EXPR pos "${pos} + 1")
+      else()
+        break()
+      endif()
+    else()
+      break()
+    endif()
   endwhile()
-  math(EXPR pos "${pos} - 1")
 
   string(SUBSTRING "${in_xml}" 0 ${pos} identifier)
   pop_front("${in_xml}" ${pos} in_xml)
@@ -69,17 +84,6 @@ endfunction()
 
 
 function(read_next_element in_xml out_xml out_elm_type out_elm_name out_elm_attrs)
-
-  skip_white_spaces("${in_xml}" in_xml)
-
-  if(in_xml STREQUAL "")
-    set(${out_xml} "" PARENT_SCOPE)
-    set(${out_elm_type} "" PARENT_SCOPE)
-    set(${out_elm_name} "" PARENT_SCOPE)
-    set(${out_elm_attrs} "" PARENT_SCOPE)
-    return()
-  endif()
-
 
   string(SUBSTRING "${in_xml}" 0 1 open_elm)
   if(NOT open_elm STREQUAL "<")
@@ -146,6 +150,7 @@ function(main)
   file(READ "D:/dev/JUCE/examples/HelloWorld/HelloWorld.jucer" xml_content)
 
   parse_xml_header("${xml_content}" xml_content)
+  skip_white_spaces("${xml_content}" xml_content)
 
   set(xpath "")
   set(depth 0)
@@ -174,6 +179,7 @@ function(main)
       string(SUBSTRING "${xpath}" 0 ${last_slash_pos} xpath)
     endif()
 
+    skip_white_spaces("${xml_content}" xml_content)
   endwhile()
 
 endfunction()
