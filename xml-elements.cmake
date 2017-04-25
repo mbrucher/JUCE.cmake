@@ -14,7 +14,7 @@ function(skip_white_spaces in_xml out_xml)
   while(1)
     if(pos LESS in_length)
       string(SUBSTRING "${in_xml}" ${pos} 1 char)
-      if(char MATCHES "[ \n\t]")
+      if(char MATCHES "[ \t\r\n]")
         math(EXPR pos "${pos} + 1")
       else()
         break()
@@ -54,8 +54,8 @@ function(read_identifier in_xml out_xml out_identifier)
 
   string(SUBSTRING "${in_xml}" 0 1 first_char)
 
-  if(NOT first_char MATCHES "[A-Za-z]")
-    message(FATAL_ERROR "Expected identifier token, got '${first_char}'")
+  if(NOT first_char MATCHES "[:A-Z_a-z]")
+    message(FATAL_ERROR "Expected token: ':' | [A-Z] | '_' | [a-z], got '${first_char}'")
   endif()
 
   set(pos 1)
@@ -64,7 +64,7 @@ function(read_identifier in_xml out_xml out_identifier)
   while(1)
     if(pos LESS in_length)
       string(SUBSTRING "${in_xml}" ${pos} 1 char)
-      if(char MATCHES "[-_:.A-Za-z0-9]")
+      if(char MATCHES "[:A-Z_a-z.0-9-]")
         math(EXPR pos "${pos} + 1")
       else()
         break()
@@ -95,12 +95,13 @@ function(read_next_element in_xml out_xml out_elm_type out_elm_name out_elm_attr
     pop_front("${in_xml}" 2 in_xml)
 
     set(elm_type "XML_END_ELEMENT")
+
     read_identifier("${in_xml}" in_xml elm_name)
     skip_white_spaces("${in_xml}" in_xml)
 
     string(SUBSTRING "${in_xml}" 0 1 close_elm)
     if(NOT close_elm STREQUAL ">")
-      message(FATAL_ERROR "Expected token: \">\"")
+      message(FATAL_ERROR "Expected token: '>', got '${close_elm}'")
     endif()
     pop_front("${in_xml}" 1 in_xml)
 
