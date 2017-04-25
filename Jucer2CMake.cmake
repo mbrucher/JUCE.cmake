@@ -28,7 +28,12 @@ if(NOT DEFINED jucer_file)
   return()
 endif()
 
-file(READ "${jucer_file}" jucer_file_content)
+set(xmlstarlet_command "xmlstarlet;elements;-v;${jucer_file}")
+execute_process(
+  COMMAND ${xmlstarlet_command}
+  OUTPUT_VARIABLE jucer_file_content
+  #RESULT_VARIABLE xmlstarlet_command_result
+  )
 
 message("Generating CMakeLists.txt...")
 
@@ -87,7 +92,10 @@ function(get_xml_attributes xml_node output_variable_prefix output_variable_list
   # strip node tag name
   # from https://www.w3schools.com/xml/xml_elements.asp , Element names cannot contain spaces
   string(FIND ${xml_node} " " pos)
+  string(SUBSTRING ${xml_node} 0 ${pos} tag_name)
+  message("> tag_name = ${tag_name}")
   string(SUBSTRING ${xml_node} ${pos} -1 xml_node)
+
 
   # if node is self closed, we strip last />, else we strip last > 
   string(FIND ${xml_node} "/>" pos REVERSE)
@@ -194,11 +202,16 @@ function(get_xml_children xml_node output_variable_prefix output_variable_list)
 endfunction(get_xml_children)
 
 
-
+get_xml_attributes(${xml_group_node} "xml_group_node_attributes_" xml_group_node_attributes)
 get_xml_children(${xml_group_node} "xml_filenode_" xml_group_files_nodes)
 
 message("Loop_var begin -------- XML GROUP FILES NODES -----------------")
 
+foreach(Loop_var ${xml_group_node_attributes})
+  # dereference double pointer to get n
+  set(xml_file_node ${${Loop_var}})
+  message("> ${xml_file_node}")
+endforeach()
 
 string(CONCAT jucer_project_files_var ${jucer_project_files_var} "jucer_project_files(\"HelloWorld/Source\"\n")
 message(FATAL_ERROR "breakpoint: TODO from here, generates HelloWorld/Source dynamicaly")
