@@ -176,20 +176,28 @@ function(get_xpath_tag_name xml_xpath output_tag_name)
 endfunction(get_xpath_tag_name)
 
 function(get_xpath_depth xml_xpath output_depth)
-  message(FATAL_ERROR "\n unimplemented get_xpath_depth")
+  set(depth 0)
+  while(NOT xml_xpath STREQUAL "")
+    string(FIND "${xml_xpath}" "/" pos REVERSE)
+    if(pos EQUAL -1)
+      break()
+    endif()
+    string(SUBSTRING "${xml_xpath}" 0 ${pos} xml_xpath) 
+    math (EXPR depth "${depth} + 1")
+  endwhile()
+  set(${output_depth} ${depth} PARENT_SCOPE)
 endfunction(get_xpath_depth)
 
 function(split_xml_line xml_line output_xpath output_attributes_string)
-  message(FATAL_ERROR "\n unimplemented split_xml_line")
-  
-  # strip potential attributes
-  string(SUBSTRING "${xml_node}" 0 ${pos} xml_node_line)
-  string(FIND "${xml_node_line}" "[@" pos)
-  if(NOT pos EQUAL -1)
-    # has attribute for this node
+  string(FIND "${xml_line}" "[@" pos)
+  if(pos EQUAL -1)
+    set(${output_xpath} ${xml_line} PARENT_SCOPE)
     return()
   endif()
-
+  string(SUBSTRING "${xml_line}" 0 ${pos} xpath)
+  string(SUBSTRING "${xml_line}" ${pos} -1 attributes)
+  set(${output_xpath} ${xpath} PARENT_SCOPE)
+  set(${output_attributes_string} ${attributes} PARENT_SCOPE)
 endfunction(split_xml_line)
 
 function(split_next_line big_string output_head_line output_tail)
@@ -197,24 +205,26 @@ function(split_next_line big_string output_head_line output_tail)
     return()
   endif()
   string(FIND "${big_string}" "\n" pos)
-  string(SUBSTRING ${big_string} 0 ${pos} output_head_line)
-  if(pos EQUAL -1)
-    return()
+  string(SUBSTRING ${big_string} 0 ${pos} head_line)
+  if(NOT pos EQUAL -1)
+    math (EXPR pos "${pos} + 1")
+    string(SUBSTRING ${big_string} ${pos} -1 tail)
   endif()
-  math (EXPR pos "${pos} + 1")
-  string(SUBSTRING ${big_string} ${pos} output_tail)
+  set(${output_head_line} ${head_line} PARENT_SCOPE)
+  set(${output_tail} ${tail} PARENT_SCOPE)
 endfunction(split_next_line)
 
 function(get_xml_children xml_node node_tag_regex output_variable_prefix output_variable_list)
-  split_next_line(xml_node xml_node_line xml_node)
+  split_next_line("${xml_node}" xml_node_line xml_node)
+
   if(xml_node STREQUAL "")
     # no child for this node
     return()
   endif()
 
   # save the current depth
-  split_xml_line(xml_node_line xpath attributes)
-  get_xpath_depth(${xpath} xml_node_depth)
+  split_xml_line("${xml_node_line}" xpath attributes)
+  get_xpath_depth("${xpath}" xml_node_depth)
   set(original_xml_node_depth ${xml_node_depth})
   math (EXPR xml_new_child_node_depth "${xml_node_depth} + 1")
 
@@ -222,8 +232,9 @@ function(get_xml_children xml_node node_tag_regex output_variable_prefix output_
   # while xml node not empty
   while(NOT xml_node STREQUAL "")
     # extract next line
-    split_next_line(xml_node xml_node_line xml_node)
-    split_xml_line(xml_node_line xpath attributes)
+    split_next_line("${xml_node}" xml_node_line xml_node)
+    string(STRIP "${xml_node}" xml_node)
+    split_xml_line("${xml_node_line}" xpath attributes)
     get_xpath_depth(${xpath} xml_node_depth)
     
     if(xml_node_depth LESS original_xml_node_depth)
@@ -250,7 +261,7 @@ function(get_xml_children xml_node node_tag_regex output_variable_prefix output_
       math (EXPR counter "${counter} + 1")
     endif()
 
-    string(CONCAT xml_current_child_value ${xml_current_child_value} xml_node_line "\n")
+    string(CONCAT xml_current_child_value ${xml_current_child_value} ${xml_node_line} "\n")
   endwhile()
 
   # set global variable
@@ -263,12 +274,29 @@ get_xml_children(${jucer_file_content} "" "jucer_xml_lvl1_" jucer_xml_lvl0_child
 message("Loop_var begin ---------------------------------")
 foreach(Loop_var ${jucer_xml_lvl0_children})
   message("> ${Loop_var}=${${Loop_var}}")
+  message("")
+  message("")
+  message("")
 endforeach()
 message("Loop_var end")
 
 
 
 message(FATAL_ERROR "\nbreakpoint get_xml_children ????")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # extract GROUP NODE
 string(FIND ${jucer_file_content} "<MAINGROUP" pos)
 string(SUBSTRING ${jucer_file_content} ${pos} -1 tempXml)
