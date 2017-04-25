@@ -79,75 +79,87 @@ function(get_substring_inclusive big_string token_begin token_end output_variabl
   set(${output_variable} "${substring}" PARENT_SCOPE)
 endfunction(get_substring_inclusive)
 
-get_substring_inclusive(${jucer_file_content} "<JUCERPROJECT" ">" jucer_file_content_jucerProjectContent)
-
-#-------------- extract all content of 
-
 function(get_xml_attributes xml_node output_variable_prefix output_variable_list)
-  # strip first <
-  string(FIND ${xml_node} "<" pos)
+  #example = JUCERPROJECT[@id='tTAKTK1s' and @name='HelloWorld' and @projectType='guiapp' and @juceFolder='../../../juce' and @jucerVersion='4.3.1' and @version='1.0.0' and @bundleIdentifier='com.roli.jucehelloworld' and @companyName='ROLI Ltd.' and @includeBinaryInAppConfig='1']
+  # strip
+  string(STRIP "${xml_node}" xml_node)
+  # only get first line
+  string(FIND "${xml_node}" "\n" pos)
+  string(SUBSTRING ${xml_node} 0 ${pos} xml_node)
+  string(STRIP "${xml_node}" xml_node)
+  # if first line does not have any @, it means this node has no attribute and we can return
+
+  string(FIND "${xml_node}" "@" pos)
+  if(pos EQUAL -1)
+    # no attribute for this node
+    return()
+  endif()
+
+  # strip first [
+  string(FIND "${xml_node}" "[" pos)
   math (EXPR pos "${pos} + 1")
   string(SUBSTRING ${xml_node} ${pos} -1 xml_node)
+  # strip last ]
+  string(FIND "${xml_node}" "]" pos)
+  string(SUBSTRING ${xml_node} 0 ${pos}  xml_node)
+
   string(STRIP "${xml_node}" xml_node)
-  # strip node tag name
-  # from https://www.w3schools.com/xml/xml_elements.asp , Element names cannot contain spaces
-  string(FIND ${xml_node} " " pos)
-  string(SUBSTRING ${xml_node} 0 ${pos} tag_name)
-  message("> tag_name = ${tag_name}")
-  string(SUBSTRING ${xml_node} ${pos} -1 xml_node)
-
-
-  # if node is self closed, we strip last />, else we strip last > 
-  string(FIND ${xml_node} "/>" pos REVERSE)
-  if(${pos} EQUAL -1)
-    string(FIND ${xml_node} ">" pos REVERSE)
-  endif()
-  string(SUBSTRING ${xml_node} 0 ${pos} xml_node)
-
-  #-------------------------------------------
-  # strip xml_node
-  string(STRIP "${xml_node}" xml_node)
-  # while xml_node not empty
+  # while not empty
   while(NOT xml_node STREQUAL "")
-    # lookup first equal sign
-    string(FIND ${xml_node} "=" equal_sign_pos)
-    # extract from beginning to first equal sign pos
-    string(SUBSTRING ${xml_node} 0 ${equal_sign_pos} xml_var_name)
-    # remove used text in case the node name contains quotes
-    math (EXPR equal_sign_pos "${equal_sign_pos} + 1")
-    string(SUBSTRING ${xml_node} ${equal_sign_pos} -1 xml_node)
-    # lookup first quote
-    string(FIND ${xml_node} "\"" first_quote_pos)
-    # remove all text until the first quote so we can find the second quote
-    math (EXPR first_quote_pos "${first_quote_pos} + 1") 
-    string(SUBSTRING ${xml_node} ${first_quote_pos} -1 xml_node)
-    # lookup second quote
-    string(FIND ${xml_node} "\"" second_quote_pos)
-    # extract from first to second quote pos
-    string(SUBSTRING ${xml_node} 0 ${second_quote_pos} xml_var_value)
-    # remove all text until the second quote
-    math (EXPR second_quote_pos "${second_quote_pos} + 1")
-    string(SUBSTRING ${xml_node} ${second_quote_pos} -1 xml_node)
-    # strip xml_node
-    string(STRIP "${xml_node}" xml_node)
+    string(FIND "${xml_node}" "and" pos)
+    # if has only one attribute
+    if(${pos} EQUAL -1)
+      # extract all
+      set(extracted_pair ${xml_node})
+      set(xml_node "")
+    else()
+      # extract until AND
+      string(SUBSTRING ${xml_node} 0 ${pos} extracted_pair)
+      math (EXPR pos "${pos} + 3")
+      string(SUBSTRING ${xml_node} ${pos} -1 xml_node)
+    endif()
+    # strip
+    string(STRIP "${extracted_pair}" extracted_pair)
+    # strip first @
+    string(SUBSTRING ${extracted_pair} 1 -1 extracted_pair)
+    # extract until =
+    string(FIND "${extracted_pair}" "=" pos)
+    # -> attribute name
+    string(SUBSTRING ${extracted_pair} 0 ${pos} xml_var_name)
+    # strip =
+    math (EXPR pos "${pos} + 1")
+    string(SUBSTRING ${extracted_pair} ${pos} -1 extracted_pair)
+    # strip first single quote
+    string(FIND "${extracted_pair}" "'" pos)
+    math (EXPR pos "${pos} + 1")
+    string(SUBSTRING ${extracted_pair} ${pos} -1 extracted_pair)
+    # strip last single quote
+    string(FIND "${extracted_pair}" "'" pos REVERSE)
+    # -> attribute value
+    string(SUBSTRING ${extracted_pair} 0 ${pos} xml_var_value)
 
     # set variable
     set(full_xml_var_name ${output_variable_prefix}${xml_var_name})
     set(${full_xml_var_name} ${xml_var_value} PARENT_SCOPE)
     # add variable to variable list
     list(APPEND variable_list ${full_xml_var_name})
-
+    # strip to ease the while test condition
+    string(STRIP "${xml_node}" xml_node)
   endwhile()
+  # set global variable
   set(${output_variable_list} "${variable_list}" PARENT_SCOPE)
+  return()
 endfunction(get_xml_attributes)
 
-get_xml_attributes(${jucer_file_content_jucerProjectContent} "xml_JUCERPROJECT_" jucer_file_content_jucerProjectContent_attributes)
+get_xml_attributes(${jucer_file_content} "xml_JUCERPROJECT_" jucer_file_content_jucerProjectContent_attributes)
 
 message("Loop_var begin")
 foreach(Loop_var ${jucer_file_content_jucerProjectContent_attributes})
   message("> ${Loop_var}=${${Loop_var}}")
 endforeach()
 message("Loop_var end")
+
+message(FATAL_ERROR "breakpoint get_xml_attributes REPAIRED ! :D")
 
 get_substring(${jucer_file_content_jucerProjectContent} "name=\"" "\" projectType" project_name_xml)
 
