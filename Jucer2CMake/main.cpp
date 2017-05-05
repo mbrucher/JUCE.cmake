@@ -397,6 +397,57 @@ int main(int argc, char* argv[])
     }
   }
 
+  // if(APPLE)
+  const auto xcodeMacFormat = exportFormats.getChildWithName("XCODE_MAC");
+  if (xcodeMacFormat.isValid())
+  {
+    out << "if(APPLE)\n";
+
+    out << "  set(CMAKE_CONFIGURATION_TYPES";
+    for (const auto& configuration : xcodeMacFormat.getChildWithName("CONFIGURATIONS"))
+    {
+      out << " " << configuration.getProperty("name").toString();
+    }
+    out << ")\n";
+
+    out << "endif()\n"
+        << "\n";
+  }
+
+  // if(MSVC_VERSION EQUAL 1900) # VS2015
+  const auto vs2015Format = exportFormats.getChildWithName("VS2015");
+  if (vs2015Format.isValid())
+  {
+    out << "if(MSVC_VERSION EQUAL 1900) # VS2015\n";
+
+    out << "  set(CMAKE_CONFIGURATION_TYPES";
+    for (const auto& configuration : vs2015Format.getChildWithName("CONFIGURATIONS"))
+    {
+      out << " " << configuration.getProperty("name").toString();
+    }
+    out << ")\n";
+
+    out << "endif()\n"
+        << "\n";
+  }
+
+  // if(MSVC_VERSION EQUAL 1800) # VS2013
+  const auto vs2013Format = exportFormats.getChildWithName("VS2013");
+  if (vs2013Format.isValid())
+  {
+    out << "if(MSVC_VERSION EQUAL 1800) # VS2013\n";
+
+    out << "  set(CMAKE_CONFIGURATION_TYPES";
+    for (const auto& configuration : vs2013Format.getChildWithName("CONFIGURATIONS"))
+    {
+      out << " " << configuration.getProperty("name").toString();
+    }
+    out << ")\n";
+
+    out << "endif()\n"
+        << "\n";
+  }
+
   out << "jucer_project_end()" << std::endl;
 
   return 0;
