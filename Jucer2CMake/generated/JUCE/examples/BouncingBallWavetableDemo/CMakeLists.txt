@@ -146,4 +146,12 @@ jucer_project_module(
   # JUCE_USE_CAMERA
 )
 
+if(APPLE)
+  set(CMAKE_CONFIGURATION_TYPES Debug Release)
+endif()
+
+if(MSVC_VERSION EQUAL 1800) # VS2013
+  set(CMAKE_CONFIGURATION_TYPES Debug Release)
+endif()
+
 jucer_project_end()

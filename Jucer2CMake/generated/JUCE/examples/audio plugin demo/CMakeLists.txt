@@ -161,4 +161,12 @@ jucer_project_module(
   # JUCE_ENABLE_LIVE_CONSTANT_EDITOR
 )
 
+if(APPLE)
+  set(CMAKE_CONFIGURATION_TYPES Debug Release)
+endif()
+
+if(MSVC_VERSION EQUAL 1900) # VS2015
+  set(CMAKE_CONFIGURATION_TYPES Debug Release)
+endif()
+
 jucer_project_end()

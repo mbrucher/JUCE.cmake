@@ -56,4 +56,8 @@ jucer_project_module(
   # JUCE_ALLOW_STATIC_NULL_VARIABLES
 )
 
+if(APPLE)
+  set(CMAKE_CONFIGURATION_TYPES Debug Release)
+endif()
+
 jucer_project_end()
