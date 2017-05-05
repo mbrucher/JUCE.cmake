@@ -63,6 +63,8 @@ int main(int argc, char* argv[])
     return 1;
   }
 
+  const auto exportFormats = jucerProject.getChildWithName("EXPORTFORMATS");
+
   std::ofstream out{"CMakeLists.txt"};
 
   const auto jucerFileName = juce::File{jucerFilePath}.getFileName().toStdString();
@@ -344,9 +346,7 @@ int main(int argc, char* argv[])
       moduleNames.push_back(module.getProperty("id").toString().toStdString());
     }
 
-    const auto modulePaths = jucerProject.getChildWithName("EXPORTFORMATS")
-                               .getChild(1)
-                               .getChildWithName("MODULEPATHS");
+    const auto modulePaths = exportFormats.getChild(1).getChildWithName("MODULEPATHS");
 
     for (const auto& moduleName : moduleNames)
     {
