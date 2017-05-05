@@ -15,6 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with JUCE.cmake.  If not, see <http://www.gnu.org/licenses/>.
 
+#include "compile_options.hpp"
+
 #include "JuceHeader.h"
 
 #include <fstream>
@@ -408,7 +410,17 @@ int main(int argc, char* argv[])
     {
       out << " " << configuration.getProperty("name").toString();
     }
-    out << ")\n";
+    out << ")\n"
+        << "\n";
+
+    out << "  add_compile_options(\n";
+    for (const auto& configuration : xcodeMacFormat.getChildWithName("CONFIGURATIONS"))
+    {
+      out << "    $<$<CONFIG:" << configuration.getProperty("name").toString() << ">:"
+          << getGCCOptimization(int{configuration.getProperty("optimisation", -1)})
+          << ">\n";
+    }
+    out << "  )\n";
 
     out << "endif()\n"
         << "\n";
@@ -425,7 +437,17 @@ int main(int argc, char* argv[])
     {
       out << " " << configuration.getProperty("name").toString();
     }
-    out << ")\n";
+    out << ")\n"
+        << "\n";
+
+    out << "  add_compile_options(\n";
+    for (const auto& configuration : vs2015Format.getChildWithName("CONFIGURATIONS"))
+    {
+      out << "    $<$<CONFIG:" << configuration.getProperty("name").toString() << ">:"
+          << getMSVCOptimization(int{configuration.getProperty("optimisation", -1)})
+          << ">\n";
+    }
+    out << "  )\n";
 
     out << "endif()\n"
         << "\n";
@@ -442,7 +464,17 @@ int main(int argc, char* argv[])
     {
       out << " " << configuration.getProperty("name").toString();
     }
-    out << ")\n";
+    out << ")\n"
+        << "\n";
+
+    out << "  add_compile_options(\n";
+    for (const auto& configuration : vs2013Format.getChildWithName("CONFIGURATIONS"))
+    {
+      out << "    $<$<CONFIG:" << configuration.getProperty("name").toString() << ">:"
+          << getMSVCOptimization(int{configuration.getProperty("optimisation", -1)})
+          << ">\n";
+    }
+    out << "  )\n";
 
     out << "endif()\n"
         << "\n";
