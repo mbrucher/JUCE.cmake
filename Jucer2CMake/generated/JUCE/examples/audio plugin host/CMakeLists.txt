@@ -170,14 +170,29 @@ jucer_project_module(
 
 if(APPLE)
   set(CMAKE_CONFIGURATION_TYPES Debug Release)
+
+  add_compile_options(
+    $<$<CONFIG:Debug>:-O0>
+    $<$<CONFIG:Release>:-Os>
+  )
 endif()
 
 if(MSVC_VERSION EQUAL 1900) # VS2015
   set(CMAKE_CONFIGURATION_TYPES Debug Release)
+
+  add_compile_options(
+    $<$<CONFIG:Debug>:/Od>
+    $<$<CONFIG:Release>:/O2>
+  )
 endif()
 
 if(MSVC_VERSION EQUAL 1800) # VS2013
   set(CMAKE_CONFIGURATION_TYPES Debug Release)
+
+  add_compile_options(
+    $<$<CONFIG:Debug>:/Od>
+    $<$<CONFIG:Release>:/O2>
+  )
 endif()
 
 jucer_project_end()

@@ -95,6 +95,11 @@ jucer_project_module(
 
 if(APPLE)
   set(CMAKE_CONFIGURATION_TYPES Debug Release)
+
+  add_compile_options(
+    $<$<CONFIG:Debug>:-O0>
+    $<$<CONFIG:Release>:-Os>
+  )
 endif()
 
 jucer_project_end()
