@@ -427,16 +427,18 @@ int main(int argc, char* argv[])
 
         if (jucerProject.getChildWithName("MODULES")
               .getChildWithProperty("id", "juce_audio_processors")
-              .isValid() &&
-            jucerProject.getChildWithName("JUCEOPTIONS")
-                .getProperty("JUCE_PLUGINHOST_VST3") == "enabled")
+              .isValid())
         {
-          const auto vst3Folder =
-            exporter.getProperty("vst3Folder").toString().toStdString();
+          if (jucerProject.getChildWithName("JUCEOPTIONS")
+                .getProperty("JUCE_PLUGINHOST_VST3") == "enabled")
+          {
+            const auto vst3Folder =
+              exporter.getProperty("vst3Folder").toString().toStdString();
 
-          out << "  VST3_SDK_FOLDER \""
-              << escape("\\", (vst3Folder.empty() ? std::get<2>(element) : vst3Folder))
-              << "\"\n";
+            out << "  VST3_SDK_FOLDER \""
+                << escape("\\", (vst3Folder.empty() ? std::get<2>(element) : vst3Folder))
+                << "\"\n";
+          }
         }
 
         out << "  " << getSetting(exporter, "EXTRA_PREPROCESSOR_DEFINITIONS", "extraDefs")
