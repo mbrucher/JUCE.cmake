@@ -401,9 +401,17 @@ int main(int argc, char* argv[])
   {
     const std::vector<std::tuple<const char*, const char*, const char*>>
       supportedExporters = {
-        std::make_tuple("XCODE_MAC", "Xcode (MacOSX)", "~/SDKs/VST_SDK/VST3_SDK"),
-        std::make_tuple("VS2015", "Visual Studio 2015", "c:\\SDKs\\VST_SDK\\VST3_SDK"),
-        std::make_tuple("VS2013", "Visual Studio 2013", "c:\\SDKs\\VST_SDK\\VST3_SDK")};
+        std::make_tuple("XCODE_MAC",
+          "Xcode (MacOSX)",
+          features.supportsVstSdk367 ? "~/SDKs/VST_SDK/VST3_SDK" : "~/SDKs/VST3 SDK"),
+        std::make_tuple("VS2015",
+          "Visual Studio 2015",
+          features.supportsVstSdk367 ? "c:\\SDKs\\VST_SDK\\VST3_SDK"
+                                     : "c:\\SDKs\\VST3 SDK"),
+        std::make_tuple("VS2013",
+          "Visual Studio 2013",
+          features.supportsVstSdk367 ? "c:\\SDKs\\VST_SDK\\VST3_SDK"
+                                     : "c:\\SDKs\\VST3 SDK")};
 
     for (const auto& element : supportedExporters)
     {
