@@ -429,6 +429,18 @@ int main(int argc, char* argv[])
               .getChildWithProperty("id", "juce_audio_processors")
               .isValid())
         {
+          if (!features.hasVST2Interface &&
+              jucerProject.getChildWithName("JUCEOPTIONS")
+                  .getProperty("JUCE_PLUGINHOST_VST") == "enabled")
+          {
+            const auto vstFolder =
+              exporter.getProperty("vstFolder").toString().toStdString();
+
+            out << "  VST_SDK_FOLDER \""
+                << escape("\\", (vstFolder.empty() ? std::get<2>(element) : vstFolder))
+                << "\"\n";
+          }
+
           if (jucerProject.getChildWithName("JUCEOPTIONS")
                 .getProperty("JUCE_PLUGINHOST_VST3") == "enabled")
           {
