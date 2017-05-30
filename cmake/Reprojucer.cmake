@@ -373,6 +373,7 @@ function(jucer_export_target exporter)
   endif()
 
   set(export_target_settings_tags
+    "VST_SDK_FOLDER"
     "VST3_SDK_FOLDER"
     "EXTRA_PREPROCESSOR_DEFINITIONS"
     "EXTRA_COMPILER_FLAGS"
@@ -403,6 +404,11 @@ function(jucer_export_target exporter)
         string(REPLACE "\\" "/" value "${value}")
         __abs_path_based_on_jucer_project_dir("${value}" value)
         set(JUCER_TARGET_PROJECT_FOLDER ${value} PARENT_SCOPE)
+
+      elseif(tag STREQUAL "VST_SDK_FOLDER")
+        string(REPLACE "\\" "/" value "${value}")
+        __abs_path_based_on_jucer_project_dir("${value}" value)
+        set(JUCER_VST_SDK_FOLDER ${value} PARENT_SCOPE)
 
       elseif(tag STREQUAL "VST3_SDK_FOLDER")
         string(REPLACE "\\" "/" value "${value}")
