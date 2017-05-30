@@ -136,6 +136,9 @@ jucer_export_target(
   "Xcode (MacOSX)"
   # EXTRA_PREPROCESSOR_DEFINITIONS
   # EXTRA_COMPILER_FLAGS
+  ICON_SMALL "<None>"
+  ICON_LARGE "<None>"
+
   # EXTRA_FRAMEWORKS
   # PREBUILD_SHELL_SCRIPT
   # POSTBUILD_SHELL_SCRIPT
@@ -163,6 +166,9 @@ jucer_export_target(
   "Visual Studio 2013"
   # EXTRA_PREPROCESSOR_DEFINITIONS
   # EXTRA_COMPILER_FLAGS
+  ICON_SMALL "<None>"
+  ICON_LARGE "<None>"
+
 )
 
 jucer_export_target_configuration(

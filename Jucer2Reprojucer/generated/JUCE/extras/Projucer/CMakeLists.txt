@@ -426,6 +426,9 @@ jucer_export_target(
   "Xcode (MacOSX)"
   # EXTRA_PREPROCESSOR_DEFINITIONS
   EXTRA_COMPILER_FLAGS "-Wall -Wshadow -Wno-missing-field-initializers -Wshadow -Wshorten-64-to-32 -Wstrict-aliasing -Wuninitialized -Wunused-parameter -Wconversion -Wsign-compare -Wint-conversion -Woverloaded-virtual -Wreorder -Wconstant-conversion -Wsign-conversion"
+  ICON_SMALL "<None>"
+  ICON_LARGE "Source/BinaryData/juce_icon.png"
+
   EXTRA_FRAMEWORKS "AudioUnit\; Accelerate\; AVFoundation\; CoreAudio\; CoreAudioKit\; CoreMIDI\; DiscRecording\; QuartzCore\; AudioToolbox\; OpenGL\; QTKit\; QuickTime"
   # PREBUILD_SHELL_SCRIPT
   # POSTBUILD_SHELL_SCRIPT
@@ -453,6 +456,9 @@ jucer_export_target(
   "Visual Studio 2015"
   # EXTRA_PREPROCESSOR_DEFINITIONS
   # EXTRA_COMPILER_FLAGS
+  ICON_SMALL "<None>"
+  ICON_LARGE "Source/BinaryData/juce_icon.png"
+
 )
 
 jucer_export_target_configuration(
@@ -473,6 +479,9 @@ jucer_export_target(
   "Visual Studio 2013"
   # EXTRA_PREPROCESSOR_DEFINITIONS
   # EXTRA_COMPILER_FLAGS
+  ICON_SMALL "<None>"
+  ICON_LARGE "Source/BinaryData/juce_icon.png"
+
 )
 
 jucer_export_target_configuration(
