@@ -99,6 +99,31 @@ std::string getSetting(const juce::ValueTree& valueTree, const std::string& cmak
 }
 
 
+juce::ValueTree getChildWithPropertyRecursively(const juce::ValueTree& valueTree,
+  const juce::Identifier& propertyName, const juce::var& propertyValue)
+{
+  const auto child = valueTree.getChildWithProperty(propertyName, propertyValue);
+
+  if (child.isValid())
+  {
+    return child;
+  }
+
+  for (auto i = 0; i < valueTree.getNumChildren(); ++i)
+  {
+    const auto grandchild =
+      getChildWithPropertyRecursively(valueTree.getChild(i), propertyName, propertyValue);
+
+    if (grandchild.isValid())
+    {
+      return grandchild;
+    }
+  }
+
+  return {};
+}
+
+
 int main(int argc, char* argv[])
 {
   if (argc != 3)
@@ -442,6 +467,32 @@ int main(int argc, char* argv[])
         out << "  " << getSetting(exporter, "EXTRA_PREPROCESSOR_DEFINITIONS", "extraDefs")
             << "\n"
             << "  " << getSetting(exporter, "EXTRA_COMPILER_FLAGS", "extraCompilerFlags")
+            << "\n";
+
+        const auto mainGroup = jucerProject.getChildWithName("MAINGROUP");
+
+        const auto smallIconFileId = exporter.getProperty("smallIcon").toString();
+        const auto smallIconFile =
+          smallIconFileId.isEmpty()
+            ? juce::ValueTree{}
+            : getChildWithPropertyRecursively(mainGroup, "id", smallIconFileId);
+        const auto smallIconPath =
+          smallIconFile.isValid()
+            ? smallIconFile.getProperty("file").toString().toStdString()
+            : std::string{""};
+
+        const auto bigIconFileId = exporter.getProperty("bigIcon").toString();
+        const auto bigIconFile =
+          bigIconFileId.isEmpty() ? juce::ValueTree{} : getChildWithPropertyRecursively(
+                                                          mainGroup, "id", bigIconFileId);
+        const auto bigIconPath =
+          bigIconFile.isValid() ? bigIconFile.getProperty("file").toString().toStdString()
+                                : std::string{""};
+
+        out << "  ICON_SMALL \"" << (smallIconPath.empty() ? "<None>" : smallIconPath)
+            << "\"\n"
+            << "  ICON_LARGE \"" << (bigIconPath.empty() ? "<None>" : bigIconPath)
+            << "\"\n"
             << "\n";
 
         if (exporterType == "XCODE_MAC")
